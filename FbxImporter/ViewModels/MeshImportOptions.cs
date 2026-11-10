@@ -11,6 +11,8 @@ public record MeshImportOptions
     
     public bool FlipFaces { get; init; } = false;
 
+    public bool ErTangents { get; init; } = true;
+
     public string MTD { get; init; } = null!;
 
     public FLVER2MaterialInfoBank MaterialInfoBank { get; init; } = null!;

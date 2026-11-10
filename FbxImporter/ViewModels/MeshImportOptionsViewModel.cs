@@ -47,6 +47,7 @@ public class MeshImportOptionsViewModel : ViewModelBase
         TransformPreset = optionsCache?.TransformPreset ?? TransformPreset.None;
         CustomTransform = new Matrix3x3ViewModel(optionsCache?.Transform ?? Matrix4x4.Identity);
         FlipFaces = optionsCache?.FlipFaces ?? false;
+        ErTangents = optionsCache?.ErTangents ?? true;
         Weighting = optionsCache?.Weighting ?? WeightingMode.Skin;
 
         string? lastUsedMaterial =
@@ -108,6 +109,8 @@ public class MeshImportOptionsViewModel : ViewModelBase
     
     [Reactive] public bool FlipFaces { get; set; }
 
+    [Reactive] public bool ErTangents { get; set; }
+
     private SourceCache<string, string> Materials { get; }
 
     public ObservableCollectionExtended<string> FilteredMaterials { get; } = new();
@@ -138,6 +141,7 @@ public class MeshImportOptionsViewModel : ViewModelBase
             TransformPreset = TransformPreset,
             Transform = transform,
             FlipFaces = FlipFaces,
+            ErTangents = ErTangents,
             MTD = SelectedMaterial!,
             MaterialInfoBank = _materialInfoBank,
             Weighting = Weighting
