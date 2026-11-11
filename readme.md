@@ -19,3 +19,9 @@ for each vertex it adds up the +V and +U directions of the triangles around it, 
 own tangents. Unticked, the tangents are as in the upstream FbxImporter.
 
 The convention was measured and checked in game on Elden Ring only; Dark Souls 3 and Sekiro were not checked.
+
+## Unicode text (this fork)
+
+FBX files open from any folder and file name, in any language. Mesh and bone names are read as the UTF-8 text the
+FBX SDK returns, so they keep their characters and match FLVER bone names written in the same characters. When the
+FBX SDK cannot open a file, the log shows its error message.
