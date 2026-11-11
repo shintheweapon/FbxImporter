@@ -152,10 +152,21 @@ public class UnicodeImportTests : IDisposable
     }
 
     [Fact]
-    public void ImportOfAMissingFileThrows()
+    public void ImportOfAMissingFileSaysFileNotFound()
     {
         string path = Path.Combine(_folder, "不存在_ü.fbx");
 
-        Assert.Throws<InvalidDataException>(() => FbxMeshData.Import(path));
+        var e = Assert.Throws<FileNotFoundException>(() => FbxMeshData.Import(path));
+        Assert.Equal(path, e.FileName);
+    }
+
+    [Fact]
+    public void ImportOfAFileTheSdkCannotReadNamesTheFile()
+    {
+        string path = Path.Combine(_folder, "坏的_ü.fbx");
+        File.WriteAllBytes(path, new byte[] { 0x00, 0x01, 0x02, 0x03, 0xFF, 0xFE, 0x00, 0x00 });
+
+        var e = Assert.Throws<InvalidDataException>(() => FbxMeshData.Import(path));
+        Assert.StartsWith("Could not open 坏的_ü.fbx: ", e.Message);
     }
 }

@@ -20,8 +20,15 @@ own tangents. Unticked, the tangents are as in the upstream FbxImporter.
 
 The convention was measured and checked in game on Elden Ring only; Dark Souls 3 and Sekiro were not checked.
 
-## Unicode text (this fork)
+## Unicode text and error messages (this fork)
 
 FBX files open from any folder and file name, in any language. Mesh and bone names are read as the UTF-8 text the
-FBX SDK returns, so they keep their characters and match FLVER bone names written in the same characters. When the
-FBX SDK cannot open a file, the log shows its error message.
+FBX SDK returns, so they keep their characters and match FLVER bone names written in the same characters.
+
+Every failed open, import, add or save writes one line to the log, and the app stays open:
+- a missing file: "File not found: " and its path;
+- a file that cannot be read or written (an FBX the FBX SDK rejects, a FLVER of the wrong kind, a read-only or
+  locked file): the file and the reason;
+- anything else is a bug, and its line carries the full technical detail for a report.
+
+A Save As that fails leaves Save writing to the file opened or saved before.
