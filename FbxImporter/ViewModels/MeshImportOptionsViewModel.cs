@@ -16,6 +16,7 @@ namespace FbxImporter.ViewModels;
 public class MeshImportOptionsViewModel : ViewModelBase
 {
     private readonly FLVER2MaterialInfoBank _materialInfoBank;
+    private readonly FlverViewModel.FlverVersion _game;
 
     private class FilteredStringComparer : IComparer<string>
     {
@@ -42,12 +43,16 @@ public class MeshImportOptionsViewModel : ViewModelBase
     }
 
     public MeshImportOptionsViewModel(string? mtd, FLVER2MaterialInfoBank materialInfoBank,
-        MeshImportOptions? optionsCache)
+        MeshImportOptions? optionsCache, FlverViewModel.FlverVersion game)
     {
+        _game = game;
         TransformPreset = optionsCache?.TransformPreset ?? TransformPreset.None;
         CustomTransform = new Matrix3x3ViewModel(optionsCache?.Transform ?? Matrix4x4.Identity);
         FlipFaces = optionsCache?.FlipFaces ?? false;
-        ErTangents = optionsCache?.ErTangents ?? true;
+        // ER Tangents was checked on Elden Ring only: it starts ticked there, and the last choice is kept per game.
+        ErTangents = optionsCache is not null && optionsCache.Game == game
+            ? optionsCache.ErTangents
+            : game == FlverViewModel.FlverVersion.ER;
         Weighting = optionsCache?.Weighting ?? WeightingMode.Skin;
 
         string? lastUsedMaterial =
@@ -142,6 +147,7 @@ public class MeshImportOptionsViewModel : ViewModelBase
             Transform = transform,
             FlipFaces = FlipFaces,
             ErTangents = ErTangents,
+            Game = _game,
             MTD = SelectedMaterial!,
             MaterialInfoBank = _materialInfoBank,
             Weighting = Weighting
