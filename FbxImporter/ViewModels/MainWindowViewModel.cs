@@ -96,7 +96,7 @@ namespace FbxImporter.ViewModels
         private async Task AddToFlverAsync()
         {
             MeshImportOptionsViewModel optionsViewModel =
-                new(Fbx!.SelectedMeshes[0].MTD, Flver!.MaterialInfoBank, _meshImportOptionsCache);
+                new(Fbx!.SelectedMeshes[0].MTD, Flver!.MaterialInfoBank, _meshImportOptionsCache, Flver.Version);
             MeshImportOptions? options = await GetMeshImportOptions.Handle(optionsViewModel);
             if (options is null) return;
 
@@ -230,7 +230,7 @@ namespace FbxImporter.ViewModels
             FLVER2MaterialInfoBank materialInfoBank = await FlverViewModel.LoadMaterialInfoBankAsync(version);
 
             _history.Clear();
-            Flver = new FlverViewModel(flver, materialInfoBank, _history);
+            Flver = new FlverViewModel(flver, materialInfoBank, _history, version);
             FlverPath = flverPath;
             Logger.Log("Successfully opened flver");
         }

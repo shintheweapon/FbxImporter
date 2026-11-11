@@ -58,8 +58,8 @@
                         </ComboBox.DataTemplates>
                     </ComboBox>
                     <ContentControl Content="{Binding CustomTransform}" IsVisible="{Binding UseCustomTransform}" Height="100" Grid.Row="4" Grid.Column="1" />
-                    <TextBlock Text="ER Tangents" ToolTip.Tip="Rebuilds the tangents from the mesh and its UVs&#10;in Elden Ring's own convention (tangent along +V),&#10;so normal maps in the DirectX layout shade as on vanilla models.&#10;Checked on Elden Ring only.&#10;Untick to keep the FBX file's tangents, as upstream FbxImporter does." VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
-                    <CheckBox IsChecked="{Binding ErTangents}" ToolTip.Tip="Rebuilds the tangents from the mesh and its UVs&#10;in Elden Ring's own convention (tangent along +V),&#10;so normal maps in the DirectX layout shade as on vanilla models.&#10;Checked on Elden Ring only.&#10;Untick to keep the FBX file's tangents, as upstream FbxImporter does." Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
+                    <TextBlock Text="ER Tangents" ToolTip.Tip="Rebuilds the tangents from the mesh and its UVs&#10;in Elden Ring's own convention (tangent along +V),&#10;so normal maps in the DirectX layout shade as on vanilla models.&#10;Checked on Elden Ring only.&#10;Starts ticked for Elden Ring FLVERs and keeps your last choice per game.&#10;Untick to keep the FBX file's tangents." VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+                    <CheckBox IsChecked="{Binding ErTangents}" ToolTip.Tip="Rebuilds the tangents from the mesh and its UVs&#10;in Elden Ring's own convention (tangent along +V),&#10;so normal maps in the DirectX layout shade as on vanilla models.&#10;Checked on Elden Ring only.&#10;Starts ticked for Elden Ring FLVERs and keeps your last choice per game.&#10;Untick to keep the FBX file's tangents." Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
                 </Grid>
             </ScrollViewer>
             <Grid ColumnDefinitions="*, *" Grid.Row="4">

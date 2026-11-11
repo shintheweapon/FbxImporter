@@ -7,7 +7,8 @@ Special thanks to TKGP for Soulsformats and Meowmaritus for SoulsAssetPipeline a
 
 ## ER Tangents (this fork)
 
-The mesh import options have an **ER Tangents** check box, ticked by default.
+The mesh import options have an **ER Tangents** check box. It starts ticked for Elden Ring FLVERs and unticked for
+the other games, and keeps the last choice made for each game.
 
 Elden Ring's own models store each tangent along +V of their UVs, with W = +1 or -1 so that W * (normal x tangent)
 points along +U. Normal maps are made for that frame. The FBX SDK's tangents point along +U, so with them a normal

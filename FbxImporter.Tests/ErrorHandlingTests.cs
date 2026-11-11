@@ -96,7 +96,7 @@ public class ErrorHandlingTests : IDisposable
     [Fact]
     public async Task AFailedSaveAsIsLoggedAndSaveKeepsThePreviousPath()
     {
-        _vm.Flver = new FlverViewModel(new FLVER2(), new FLVER2MaterialInfoBank(), new StackHistory());
+        _vm.Flver = new FlverViewModel(new FLVER2(), new FLVER2MaterialInfoBank(), new StackHistory(), FlverViewModel.FlverVersion.DS3);
         string good = Path.Combine(_folder, "good.flver");
         string bad = Path.Combine(_folder, "bad.flver");
         File.WriteAllText(bad, "");
