@@ -14,6 +14,11 @@ public record MeshImportOptions
     public bool ErTangents { get; init; } = true;
 
     /// <summary>
+    /// Sets W to -1 on the tangents ER Tangents builds, as on Elden Ring's cloth meshes. For cloth materials only.
+    /// </summary>
+    public bool ClothW { get; init; } = false;
+
+    /// <summary>
     /// The game of the FLVER these options were chosen for; null when they were not chosen in the dialog.
     /// </summary>
     public FlverViewModel.FlverVersion? Game { get; init; }

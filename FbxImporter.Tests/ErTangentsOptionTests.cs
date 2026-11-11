@@ -68,4 +68,41 @@ public class ErTangentsOptionTests
         Assert.Equal(ticked, options.ErTangents);
         Assert.Equal(FlverVersion.SDT, options.Game);
     }
+
+    [Fact]
+    public void OptionsDefaultToNoClothW()
+    {
+        Assert.False(new MeshImportOptions().ClothW);
+    }
+
+    [Fact]
+    public void DialogStartsWithClothWUntickedEvenWhenTheCacheHasIt()
+    {
+        var cache = new MeshImportOptions { ErTangents = true, ClothW = true, Game = FlverVersion.ER };
+        var vm = new MeshImportOptionsViewModel("test.mtd", Bank(), cache, FlverVersion.ER);
+        Assert.True(vm.ErTangents);
+        Assert.False(vm.ClothW);
+    }
+
+    [Fact]
+    public void UntickingErTangentsClearsClothW()
+    {
+        var vm = new MeshImportOptionsViewModel("test.mtd", Bank(), null, FlverVersion.ER) { ClothW = true };
+        Assert.True(vm.ClothW);
+        vm.ErTangents = false;
+        Assert.False(vm.ClothW);
+    }
+
+    [Theory]
+    [InlineData(true, true, true)]
+    [InlineData(false, true, false)]
+    [InlineData(true, false, false)]
+    public async Task ConfirmCarriesClothWOnlyWithErTangents(bool erTangents, bool clothW, bool expected)
+    {
+        var vm = new MeshImportOptionsViewModel("test.mtd", Bank(), null, FlverVersion.ER) { ClothW = clothW };
+        vm.ErTangents = erTangents;
+        if (erTangents) vm.ClothW = clothW;
+        MeshImportOptions options = await vm.ConfirmCommand.Execute();
+        Assert.Equal(expected, options.ClothW);
+    }
 }

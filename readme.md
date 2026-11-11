@@ -21,6 +21,15 @@ own tangents. Unticked, the tangents are as in the upstream FbxImporter.
 
 The convention was measured and checked in game on Elden Ring only; Dark Souls 3 and Sekiro were not checked.
 
+## Cloth W (this fork)
+
+Under ER Tangents, the **Cloth W (cloth materials only)** check box sets W, the bitangent sign, to -1 on every tangent
+ER Tangents builds. Almost all of Elden Ring's own cloth meshes (meshes whose material has "cloth" in its name, used
+for Havok cloth simulation) store W = -1 whatever the orientation of their UVs, unlike every other mesh. Use it only
+with a cloth material: on other meshes, mirrored UV islands shade wrongly, and the log warns when the chosen material
+has no "cloth" in its name. It needs ER Tangents and starts unticked for every import. The cloth frame was measured on
+the game's files, not tested in game.
+
 ## Unicode text and error messages (this fork)
 
 FBX files open from any folder and file name, in any language. Mesh and bone names are read as the UTF-8 text the

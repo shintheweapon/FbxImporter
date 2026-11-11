@@ -53,6 +53,10 @@ public class MeshImportOptionsViewModel : ViewModelBase
         ErTangents = optionsCache is not null && optionsCache.Game == game
             ? optionsCache.ErTangents
             : game == FlverViewModel.FlverVersion.ER;
+        // Cloth W is for cloth materials only, chosen per mesh: it always starts unticked, and unticking ER Tangents,
+        // which it adjusts, clears it.
+        ClothW = false;
+        this.WhenAnyValue(x => x.ErTangents).Where(x => !x).Subscribe(_ => ClothW = false);
         Weighting = optionsCache?.Weighting ?? WeightingMode.Skin;
 
         string? lastUsedMaterial =
@@ -116,6 +120,8 @@ public class MeshImportOptionsViewModel : ViewModelBase
 
     [Reactive] public bool ErTangents { get; set; }
 
+    [Reactive] public bool ClothW { get; set; }
+
     private SourceCache<string, string> Materials { get; }
 
     public ObservableCollectionExtended<string> FilteredMaterials { get; } = new();
@@ -147,6 +153,7 @@ public class MeshImportOptionsViewModel : ViewModelBase
             Transform = transform,
             FlipFaces = FlipFaces,
             ErTangents = ErTangents,
+            ClothW = ClothW && ErTangents,
             Game = _game,
             MTD = SelectedMaterial!,
             MaterialInfoBank = _materialInfoBank,
