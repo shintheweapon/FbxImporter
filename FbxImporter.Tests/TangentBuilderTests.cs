@@ -104,4 +104,18 @@ public class TangentBuilderTests
         var tangents = TangentBuilder.Build(p, n, flatUv, idx, fallback);
         Assert.All(tangents, t => Assert.Equal(new Vector4(1, 0, 0, -1), t));
     }
+
+    [Fact]
+    public void ClothWKeepsTheDirectionAndSetsWToMinusOne()
+    {
+        var tangents = new List<Vector4> { new(0, 1, 0, 1), new(1, 0, 0, -1), new(0.6f, 0.8f, 0, 1) };
+        List<Vector4> cloth = TangentBuilder.WithClothW(tangents);
+        Assert.Equal(tangents.Count, cloth.Count);
+        for (int i = 0; i < tangents.Count; i++)
+        {
+            Assert.Equal(new Vector3(tangents[i].X, tangents[i].Y, tangents[i].Z),
+                new Vector3(cloth[i].X, cloth[i].Y, cloth[i].Z));
+            Assert.Equal(-1, cloth[i].W);
+        }
+    }
 }

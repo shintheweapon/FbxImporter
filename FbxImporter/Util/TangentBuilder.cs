@@ -64,4 +64,18 @@ public static class TangentBuilder
 
         return result;
     }
+
+    /// <summary>
+    /// The same tangents with W, the bitangent sign, set to -1 everywhere: the frame almost all of Elden Ring's own
+    /// cloth meshes store, whatever the orientation of their UVs. Measured on the game's files, not tested in game.
+    /// On a mesh whose material is not a cloth material, mirrored UV islands then shade wrongly.
+    /// </summary>
+    /// <param name="tangents">Tangents, for example from <see cref="Build"/>.</param>
+    /// <returns>One tangent per input tangent, with the same X, Y and Z and W = -1.</returns>
+    public static List<Vector4> WithClothW(IReadOnlyList<Vector4> tangents)
+    {
+        var result = new List<Vector4>(tangents.Count);
+        foreach (Vector4 t in tangents) result.Add(t with { W = -1 });
+        return result;
+    }
 }

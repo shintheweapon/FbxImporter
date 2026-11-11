@@ -168,7 +168,19 @@ public class FbxMeshDataViewModel
         if (options.ErTangents)
         {
             ApplyErTangents(newMesh.Vertices, Data.VertexIndices,
-                Data.VertexData.Count > 0 ? Data.VertexData[0].Tangents.Count : 0);
+                Data.VertexData.Count > 0 ? Data.VertexData[0].Tangents.Count : 0, options.ClothW);
+            if (options.ClothW)
+            {
+                if (options.MTD.Contains("cloth", StringComparison.OrdinalIgnoreCase))
+                {
+                    Logger.Log($"Cloth W: set W to -1 on the tangents of mesh {Name}.");
+                }
+                else
+                {
+                    Logger.LogWarning($"Cloth W is ticked for mesh {Name}, but its material {options.MTD} is not a " +
+                                      "cloth material: its mirrored UV islands will shade wrongly.");
+                }
+            }
         }
 
         if (!foundWeights && options.Weighting != WeightingMode.Static)
@@ -334,10 +346,11 @@ public class FbxMeshDataViewModel
     /// <summary>
     /// Replaces the tangents the FBX file provided with tangents in Elden Ring's own convention (see
     /// <see cref="TangentBuilder"/>). Tangent slot i is built from UV set i, or from UV set 0 when the vertex has
-    /// fewer UV sets. Slots added only to fill the buffer layout stay as they are.
+    /// fewer UV sets. Slots added only to fill the buffer layout stay as they are. With <paramref name="clothW"/>, W
+    /// is then set to -1 on every built tangent (<see cref="TangentBuilder.WithClothW"/>).
     /// </summary>
     private static void ApplyErTangents(List<FLVER.Vertex> vertices, IReadOnlyList<int> triangleIndices,
-        int fbxTangentCount)
+        int fbxTangentCount, bool clothW)
     {
         if (vertices.Count == 0) return;
         List<Vector3> positions = vertices.Select(x => x.Position).ToList();
@@ -350,6 +363,7 @@ public class FbxMeshDataViewModel
                 : new Vector2(x.UVs[s < x.UVs.Count ? s : 0].X, x.UVs[s < x.UVs.Count ? s : 0].Y)).ToList();
             List<Vector4> fallback = vertices.Select(x => s < x.Tangents.Count ? x.Tangents[s] : Vector4.Zero).ToList();
             List<Vector4> built = TangentBuilder.Build(positions, normals, uvs, triangleIndices, fallback);
+            if (clothW) built = TangentBuilder.WithClothW(built);
             for (int i = 0; i < vertices.Count; i++)
             {
                 if (s < vertices[i].Tangents.Count) vertices[i].Tangents[s] = built[i];
