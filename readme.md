@@ -16,8 +16,11 @@ map is read turned or with its channels swapped, depending on the Transform.
 
 When ticked, the importer ignores the tangents in the FBX file and builds them from the mesh after the Transform:
 for each vertex it adds up the +V and +U directions of the triangles around it, weighted by area, and makes the
-+V sum perpendicular to the normal. This works for every Transform preset and for FBX files with or without their
-own tangents. Unticked, the tangents are as in the upstream FbxImporter.
++V sum perpendicular to the normal. The frame follows the mesh as it is after the Transform, and the file's tangents
+are used only at vertices with no usable UV area, so every Transform preset gives the game's frame, with or without
+tangents in the file. The unit tests check it under None, Mirror Z (the same matrix as Houdini), Blender/3ds Max and
+Maya; Mirror X, Mirror Y and Custom have no test. Real imports were checked under None and Mirror Z, with a file that
+carries no tangents. Unticked, the tangents are as in the upstream FbxImporter.
 
 The convention was measured and checked in game on Elden Ring only; Dark Souls 3 and Sekiro were not checked.
 
